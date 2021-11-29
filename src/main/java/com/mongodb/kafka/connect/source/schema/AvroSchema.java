@@ -164,7 +164,11 @@ public final class AvroSchema {
       case RECORD:
         SchemaBuilder structBuilder = SchemaBuilder.struct();
         context.schemaCache.put(avroSchema, structBuilder);
-        structBuilder.name(avroSchema.getName());
+        String name =
+            avroSchema.getNamespace() != null && !avroSchema.getNamespace().isEmpty()
+                ? avroSchema.getNamespace() + "." + avroSchema.getName()
+                : avroSchema.getName();
+        structBuilder.name(name);
         avroSchema
             .getFields()
             .forEach(
